@@ -13,15 +13,11 @@ var options = {
   mqttVersion:4
 }
 
-for (let index = 0; index < array.length; index++) {
-  console.log(parseInt(Math.random() * 100, 10));
-  
-}
-
 function mqttConnect() {
   client.connect(options);
 };
 
+//mqttConnect();
 
 
 function onConnect() {
@@ -47,7 +43,14 @@ function onMessageArrived(message) {
   var msgSubtopic = message.destinationName.split('/')[1];
   var msgJson = JSON.parse(message.payloadString);
   
-  if(msgTopic == 'dashboard'){  
+  console.log(msgJson);
+  console.log(msgJson);
+  if(msgTopic == 'humidity'){  
+    var dynamicNumber = document.getElementById("dynamicNumber");
+    var dynamicProgress = document.getElementById("dynamicProgress");
+    var randomNumber = parseInt(Math.random() * 100, 10);
+    dynamicNumber.innerHTML = randomNumber;
+    dynamicProgress.style = "width:"+randomNumber+"%;";
   }
   
 }
