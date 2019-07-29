@@ -1,0 +1,11 @@
+{
+  "name": "js-4k2ncy",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "fontawesome": "^5.6.3",
+    "jquery": "3.4.1",
+    "js": "^0.1.0",
+    "moment": "2.24.0"
+  }
+}
