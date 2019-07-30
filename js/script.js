@@ -76,9 +76,8 @@ function drawChart(){
       // Create the chart
       var newData = [];
       for(var init = 0; init < 20; init++){
-        newData.push(parseInt(Math.random() * 20, 10));
+        newData.push(parseInt(Math.random() * 20, 10)+);
       }
-      data.json().then(function(val){console.log(val)});
       Highcharts.chart('containerChart', {
 
           chart: {
@@ -94,8 +93,7 @@ function drawChart(){
               allowDecimals: false,
               labels: {
                   formatter: function (data, index) {
-                      console.log(index);
-                      return "18:15"; // clean, unformatted number for year
+                      return "";
                   }
               }
           },
