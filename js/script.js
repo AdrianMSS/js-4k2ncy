@@ -1,3 +1,6 @@
+import * as Highcharts from "highcharts";
+import highchartsMore from 'highcharts/highcharts-more.js'
+
 //MQTT Control
 var client = new Paho.MQTT.Client("m10.cloudmqtt.com", 34077, "myclientid_" + parseInt(Math.random() * 100, 10));
  
@@ -17,7 +20,7 @@ function mqttConnect() {
   client.connect(options);
 };
 
-//mqttConnect();
+mqttConnect();
 
 
 function onConnect() {
@@ -43,14 +46,11 @@ function onMessageArrived(message) {
   var msgSubtopic = message.destinationName.split('/')[1];
   var msgJson = JSON.parse(message.payloadString);
   
-  console.log(msgJson);
-  console.log(msgJson);
   if(msgTopic == 'humidity'){  
-    var dynamicNumber = document.getElementById("dynamicNumber");
-    var dynamicProgress = document.getElementById("dynamicProgress");
-    var randomNumber = parseInt(Math.random() * 100, 10);
-    dynamicNumber.innerHTML = randomNumber;
-    dynamicProgress.style = "width:"+randomNumber+"%;";
+    changeNumber();
+  }
+  else if(msgTopic == 'stress'){
+    drawChart();
   }
   
 }
@@ -60,4 +60,66 @@ var publish = function (payload, topic, qos) {
   var message = new Paho.MQTT.Message(payload);
   message.destinationName = topic;
   client.send(message);
+}
+
+function changeNumber(){
+  var dynamicNumber = document.getElementById("dynamicNumber");
+  var dynamicProgress = document.getElementById("dynamicProgress");
+  var randomNumber = parseInt(Math.random() * 100, 10);
+  dynamicNumber.innerHTML = randomNumber;
+  dynamicProgress.style = "width:"+randomNumber+"%;";
+}
+
+function drawChart(){
+ 
+  fetch("https://api.coindesk.com/v1/bpi/currentprice.json").then(function (data) {
+      // Create the chart
+      var newData = [];
+      for(var init = 0; init < 20; init++){
+        newData.push(parseInt(Math.random() * 20, 10));
+      }
+      data.json().then(function(val){console.log(val)});
+      Highcharts.chart('containerChart', {
+
+          chart: {
+              type: 'area'
+          },
+          rangeSelector: {
+              selected: 1
+          },
+          xAxis: {
+              title: {
+                  text: 'Hora'
+              },
+              allowDecimals: false,
+              labels: {
+                  formatter: function (data, index) {
+                      console.log(index);
+                      return "18:15"; // clean, unformatted number for year
+                  }
+              }
+          },
+          yAxis: {
+              title: {
+                  text: 'Nivel de estrés'
+              },
+              labels: {
+                  formatter: function () {
+                      return this.value;
+                  }
+              }
+          },
+
+          title: {
+              text: 'Estrés de la embarazada'
+          },
+
+          series: [{
+              data: newData,
+              tooltip: {
+                  valueDecimals: 2
+              }
+          }]
+      });
+  });
 }
