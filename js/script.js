@@ -52,6 +52,9 @@ function onMessageArrived(message) {
   else if(msgTopic == 'stress'){
     drawChart();
   }
+  else if(msgTopic == 'alert'){
+    showAlert();
+  }
   
 }
 
@@ -70,13 +73,18 @@ function changeNumber(){
   dynamicProgress.style = "width:"+randomNumber+"%;";
 }
 
+function showAlert(){
+  var alertButton = document.getElementById("alertButton");
+  alertButton.click();
+}
+
 function drawChart(){
  
   fetch("https://api.coindesk.com/v1/bpi/currentprice.json").then(function (data) {
       // Create the chart
       var newData = [];
       for(var init = 0; init < 20; init++){
-        newData.push(parseInt(Math.random() * 20, 10)+);
+        newData.push(parseInt(Math.random() * 15, 10)+5);
       }
       Highcharts.chart('containerChart', {
 
